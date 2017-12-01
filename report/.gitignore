@@ -1,0 +1,12 @@
+# Latex
+*.log
+*.aux
+*.toc
+
+# Pygments
+# _minted-report
+*.pygtex
+*.pygstyle
+
+# compiled pdf
+report.pdf
