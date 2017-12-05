@@ -1,6 +1,6 @@
 set ns [new Simulator]
 
-set nf [open tp2_ex1.nam w ]
+set nf [open out.nam w ]
 
 $ns namtrace-all $nf
 
@@ -53,7 +53,7 @@ $cbr2 attach-agent $transpUDP2
 set transpNull8 [new Agent/Null]
 $ns attach-agent $n(8) $transpNull8
 
-# Connect transportation
+# Connect transport
 $ns connect $transpUDP1 $transpNull8
 $ns connect $transpUDP2 $transpNull8
 
@@ -64,6 +64,7 @@ $ns color 2 red
 $transpUDP1 set class_ 1
 $transpUDP2 set class_ 2
 
+# config dynamic routing protocol DV|LS
 $ns rtproto LS
 # config simulation
 $ns at 1.0 "$cbr1 start"
