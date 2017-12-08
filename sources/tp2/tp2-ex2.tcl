@@ -1,6 +1,6 @@
 set ns [new Simulator]
 
-set nf [open out.nam w ]
+set nf [open tp2-ex2.nam w ]
 
 $ns namtrace-all $nf
 
@@ -8,7 +8,7 @@ proc finish {} {
 	global ns nf
 	$ns flush-trace
 	close $nf
-	exec nam out.nam &
+	exec nam tp2-ex2.nam &
 	exit 0
 }
 
