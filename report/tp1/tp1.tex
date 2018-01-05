@@ -1,16 +1,15 @@
 \chapter{TP1 : Outil de simulation de réseaux : NS-2}
     \section{Exercice 1}
         L'interface graphique de 'nam' limite certain paramétrage comme par exemple la "Bandwidth" du CBR.
-        {# Screenshot #}
+        %{# Screenshot #}
         Les options sur l'interface de nam sont limitées, ainsi, celle-ci est facile à prendre en main. Des boutons permettent de contrôler l'écoulement du temps dans la simulation, d'autres permettent d'agrandir et de réduire la vue pour se concentrer sur des parties spécifiques du réseau. Un slider permet d'ajuster le temps entre chaque étapes de la simulation.
 
         Nam dispose aussi d'un interface qui permet de simuler un scénario de façon graphique. Celle-ci comporte les fonctions de base sous forme de menu déroulant, permettant d'ajouter des noeuds, des connexions et des agents. Un clic droit permet d'ajuster les paramètres des éléments ajoutés.
         Certains réglages restent cependant inaccessibles, par exemple, la bande-passante du trafic CBR ne peut pas être ajustées afin de correspondre à ce que le script demande.
     \section{Exercice 2}
-        On souhaite simuler un réseau constitué de 4 noeuds, tel qu'illustré dans le fascicule de l'exercice. On organise notre script afin de pouvoir efficacement corriger les éventuelles erreurs qui pourraient apparaître. On choisit de l'organiser de façon semblabe au modèle OSI, on fragmente les lignes en fonction de la couche dont elles traitent.
+        On souhaite simuler un réseau constitué de 4 noeuds, tel qu'illustré dans le fascicule de l'exercice. On organise notre script afin de pouvoir efficacement corriger les éventuelles erreurs qui pourraient apparaître. On choisit de l'organiser de façon semblable au modèle OSI, on fragmente les lignes en fonction de la couche dont elles traitent.
         Les commandes permettant d'orienter les connexions entre les noeuds, ainsi que celle permettant de colorer un flux contribuent à rendre le résultat lisible, en dépit de la superposition des segments et des datagrammes.
 
     \section{conclusion}
         Le TCP permet de gérer la perte de paquet (en gérant la congestion) contrairement à UDP.
-        On utilise deux méthode pour savoir si un paquet à été dropé : "Timeout" et "3 Ack duplicate"
-
+        On utilise deux méthode pour savoir si un paquet à été perdu : "Timeout" et "3 Ack duplicate"
