@@ -10,7 +10,7 @@ $ns color 2 green
 $ns color 3 blue
 set colorCount 0
 
-# Ouvertures des flux de fichiers
+# Ouvertures des fichiers
 set f0 [open tp3-out0.tr w ]
 set f1 [open tp3-out1.tr w ]
 set f2 [open tp3-out2.tr w ]
@@ -41,7 +41,7 @@ proc finish {} {
   close $f1
   close $f2
 
-	# Exécution du logiciel xgraph avec les différentes entrées de données
+	# Exécution du logiciel xgraph avec les différents résultats
 	exec xgraph tp3-out0.tr tp3-out1.tr tp3-out2.tr -geometry 800x400 &
 
 	# Exécution du logiciel nam pour Visualisation
@@ -51,68 +51,76 @@ proc finish {} {
 
 # Créations d'un agent
 proc attach-expoo-traffic { node sink size burst idle rate } {
-    set ns [Simulator instance]
+
+		# Récupération d'une isntance du simulateur
+  	set ns [Simulator instance]
 
 		# Création d'un agent UDP
     set source [new Agent/UDP]
+		# Attache de l'agent au noeud
+    $ns attach-agent $node $source
+
 		# Coloriage
 		global colorCount
 		set colorCount [expr {$colorCount + 1}]
 		$source set class_ $colorCount++
 
-		# Attache de l'agent a un noeud
-    $ns attach-agent $node $source
-
-		# Attribution des caractéristique de la source de traffic -> Comportement
+		# Création d'un agent de traffic exponentiel et assignation de ses paramètres
     set traffic [new Application/Traffic/Exponential]
     $traffic set packetSize_ $size
     $traffic set burst_time_ $burst
     $traffic set idle_time_ $burst
-    $traffic set rate_ $rate
+		$traffic set rate_ $rate
 
-		# Association du traffic à l'agent
+		# Association du traffic source au générateur de traffic
     $traffic attach-agent $source
-		# Association d'une application émettrice
+		# Connexion de la source a l'application récepteur
     $ns connect $source $sink
     return $traffic
 }
 
-# Procedure d
+# Procedure d'écriture des résultats
 proc record { } {
     global sink0 sink1 sink2 f0 f1 f2
     set ns [Simulator instance]
+		# Temps après lequel la procédure devra être rappelé
     set time 0.5
+		# Savoir combien d'octet ont été transmit par les	 récepteurs de traffic (sink)
     set bw0 [$sink0 set bytes_]
     set bw1 [$sink1 set bytes_]
     set bw2 [$sink2 set bytes_]
+		# Établir le temps actuel
     set now [$ns now]
+		# Calcule de la bande passante (en MBit/s) et écriture des résultats dans les fichiers
     puts $f0 "$now [expr $bw0/$time*8/1000000]"
     puts $f1 "$now [expr $bw1/$time*8/1000000]"
     puts $f2 "$now [expr $bw2/$time*8/1000000]"
-    $sink0 set bytes_ 0;
+		# Réinitiaisation des valeurs des récepteurs de traffic
+		$sink0 set bytes_ 0;
     $sink1 set bytes_ 0;
     $sink2 set bytes_ 0;
+		# Re-plannification de l'appel à la procédure
     $ns at [expr $now+$time] "record"
 }
 
-# Creation des agents de monitoring
+# Creation des agents en temps que recepteur de traffic pour monitoré
 set sink0 [new Agent/LossMonitor]
 set sink1 [new Agent/LossMonitor]
 set sink2 [new Agent/LossMonitor]
 
-# Association des agents aux noeud 4 (MITM)
+# Association des agents récepteurs aux noeud 4 (MITM)
 $ns attach-agent $n4 $sink0
 $ns attach-agent $n4 $sink1
 $ns attach-agent $n4 $sink2
 
-# Création des sources de traffic et attache aux agent correspondant
+# Attachement des traffics aux noeuds n0, n1, n2 et connexion à 3 récepteurs de traffic sur n4 (créé précédemment)
 set source0 [attach-expoo-traffic $n0 $sink0 200 2s 1s 100k]
 set source1 [attach-expoo-traffic $n1 $sink1 200 2s 1s 100k]
 set source2 [attach-expoo-traffic $n2 $sink2 200 2s 1s 100k]
 
 $ns at 0.0 "record"
 
-# Start the traffic sources
+# Programmation des événements
 $ns at 10.0 "$source0 start"
 $ns at 10.0 "$source1 start"
 $ns at 10.0 "$source2 start"
