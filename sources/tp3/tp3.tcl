@@ -52,7 +52,7 @@ proc finish {} {
 # Créations d'un agent
 proc attach-expoo-traffic { node sink size burst idle rate } {
 
-		# Récupération d'une isntance du simulateur
+		# Récupération d'une instance du simulateur
   	set ns [Simulator instance]
 
 		# Création d'un agent UDP
@@ -103,12 +103,12 @@ proc record { } {
     $ns at [expr $now+$time] "record"
 }
 
-# Creation des agents en temps que recepteur de traffic pour monitoré
+# Creation des recepteurs de traffic pour monitoré
 set sink0 [new Agent/LossMonitor]
 set sink1 [new Agent/LossMonitor]
 set sink2 [new Agent/LossMonitor]
 
-# Association des agents récepteurs aux noeud 4 (MITM)
+# Association des récepteurs aux noeud 4
 $ns attach-agent $n4 $sink0
 $ns attach-agent $n4 $sink1
 $ns attach-agent $n4 $sink2
