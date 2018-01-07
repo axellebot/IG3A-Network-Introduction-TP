@@ -84,7 +84,7 @@ proc record { } {
     global sink0 sink1 sink2 f0 f1 f2
     set ns [Simulator instance]
 		# Temps après lequel la procédure devra être rappelé
-    set time 0.5
+    set time 1.0
 		# Savoir combien d'octet ont été transmit par les	 récepteurs de traffic (sink)
     set bw0 [$sink0 set bytes_]
     set bw1 [$sink1 set bytes_]
@@ -115,8 +115,8 @@ $ns attach-agent $n4 $sink2
 
 # Attachement des traffics aux noeuds n0, n1, n2 et connexion à 3 récepteurs de traffic sur n4 (créé précédemment)
 set source0 [attach-expoo-traffic $n0 $sink0 200 2s 1s 100k]
-set source1 [attach-expoo-traffic $n1 $sink1 200 2s 1s 100k]
-set source2 [attach-expoo-traffic $n2 $sink2 200 2s 1s 100k]
+set source1 [attach-expoo-traffic $n1 $sink1 200 2s 1s 200k]
+set source2 [attach-expoo-traffic $n2 $sink2 200 2s 1s 300k]
 
 $ns at 0.0 "record"
 
